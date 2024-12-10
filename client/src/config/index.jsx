@@ -1,6 +1,6 @@
 export const registerFormControl = [
     {
-        name: "username",
+        name: "userName",
         label: "User Name",
         placeholder: "Enter Your User Name",
         commonType: "input",
@@ -21,4 +21,4 @@ export const registerFormControl = [
         type: "password",
     }
 
-]
+];

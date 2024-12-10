@@ -1,13 +1,13 @@
 import { Label } from "@radix-ui/react-label";
 import { SelectTrigger } from "@radix-ui/react-select";
-import { Input } from "postcss";
-
-
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
 function CommonForm(formControl,formData, setFormData, onSubmit, buttonText){
 
     function renderInputByComponentType(getControlItem){
         let element = null;
         const value = formData[getControlItem.name] || "";
+        console.log("1 - This is from renderInputByComponentType"+getControlItem.commonType)
         switch (getControlItem.commonType) {
             case "input":
                 element = <Input 
@@ -57,17 +57,19 @@ function CommonForm(formControl,formData, setFormData, onSubmit, buttonText){
                 break;
 
         }
+        console.log("2 -This is from renderInputByComponentType"+getControlItem.commonType)
 
         return element;
     }
-
+    console.log(formControl)
     return(
         <form onSubmit={onSubmit}>
             <div className="flex flex-col gap-3">
-                {
-                    formControl.map(controlItem=> (
+                {   
+                    console.log("This iS from return calling"+formControl)}
+                {    formControl.formControl.map(controlItem=> (
                     <div className="grid w-full gap-1.5" key={controlItem.name}>
-                        <Label className="mb-1" htmlFor={controlItem.name}>{controlItem.label}</Label>
+                        <Label className="mb-1" >{controlItem.label}</Label>
                         {renderInputByComponentType(controlItem)}
                     </div>
                 ))}
