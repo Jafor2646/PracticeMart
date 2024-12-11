@@ -25,6 +25,13 @@ function AuthRegister() {
           title: data.payload.message,
         });
         navigate("/auth/login");
+      }else{
+        const err = data.error.message === "Request failed with status code 400" ? "Username or email is already in use." : data.error.message;
+        toast({ 
+          title: err,
+          type: "error",
+          variant: "destructive",
+        });
       }
     });
   }

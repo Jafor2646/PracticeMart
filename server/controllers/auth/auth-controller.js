@@ -45,9 +45,38 @@ const registerUser = async (req, res) => {
 
 //login
 
-const login = async(req, res) => {
+const loginUser = async(req, res) => {
+    const { email, password } = req.body;
     try {
-    } catch (error) {
+        const checkUser = await User.findOne({ email });
+        if (!checkUser) {
+            return res.json({
+                success: false,
+                message: 'User does not exist. Please register first.'
+            });
+        }
+
+        const isPasswordMatch = await bcrypt.compare(password, checkUser.password);
+        if (!isPasswordMatch) {
+            return res.json({
+                success: false,
+                message: 'Invalid credentials. please try again.'
+            });
+        }
+
+        const token = jwt.sign({
+            id: checkUser._id, role: checkUser.role, email: checkUser.email
+        }, "CLIENT_SECRET_KEY", { expiresIn: '60m' });
+        res.cookie('token', token, { httpOnly: true, secure: false}).json({
+            success: true,
+            message: 'Login successful.',
+            user: {
+                id: checkUser._id,
+                email: checkUser.email,
+                role: checkUser.role
+            }   
+        }); 
+    } catch (e) {
         console.log(e);
         res.status(500).json({
             success: false, 
@@ -71,4 +100,4 @@ const login = async(req, res) => {
 
 
 
-module.exports = { registerUser };
+module.exports = { registerUser, loginUser };
