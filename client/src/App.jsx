@@ -15,9 +15,18 @@ import ShoppingCheckout from "./pages/shopping-view/checkout";
 import ShoppingAccount from "./pages/shopping-view/account";
 import CheckAuth from "./components/common/check-auth";
 import UnauthPage from "./pages/unauth-page";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { checkAuth } from "./store/auth-slice";
 function App() {
-  const {user, isAuthenticated} = useSelector(state => state.auth);
+  const {user, isAuthenticated, isLoading} = useSelector(state => state.auth);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(checkAuth());
+  }, [dispatch]);
+  if(isLoading){
+    return <div>Loading...</div>
+  }
   return (
     <div className="flex flex-col overflow-hidden bg-white">
       {/* common component */}
