@@ -1,8 +1,8 @@
+import { Fragment } from "react";
+
 function AdminSideBar() {
     return (
-        <div>
-            admin sidebar
-        </div>
+        <Fragment></Fragment>
     );
 }
 
