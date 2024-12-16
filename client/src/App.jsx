@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import AuthLayout from "./components/auth/layout";
 import AuthRegister from "./pages/auth/register";
 import AuthLogin from "./pages/auth/login";
@@ -19,53 +19,79 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { checkAuth } from "./store/auth-slice";
 import { Skeleton } from "./components/ui/skeleton";
+
 function App() {
-  const {user, isAuthenticated, isLoading} = useSelector(state => state.auth);
+  const { user, isAuthenticated, isLoading } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(checkAuth());
   }, [dispatch]);
-  if(isLoading){
-    return <Skeleton className="w-[600px] h-[600px] bg-black" />
 
+  if (isLoading) {
+    return <Skeleton className="w-[600px] h-[600px] bg-black" />;
   }
+
+  // Determine redirection based on authentication and role
+  const getDefaultPath = () => {
+    if (isAuthenticated) {
+      return user?.role === "admin" ? "/admin/dashboard" : "/shop/home";
+    }
+    return "/auth/login";
+  };
+
   return (
     <div className="flex flex-col overflow-hidden bg-white">
-      {/* common component */}
-      
       <Routes>
-        <Route path="/auth" element={<CheckAuth isAuthenticated={isAuthenticated} user={user}> 
-          <AuthLayout/>
-        </CheckAuth>}> 
+        {/* Default redirection for "/" */}
+        <Route path="/" element={<Navigate to={getDefaultPath()} />} />
+
+        <Route
+          path="/auth"
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+              <AuthLayout />
+            </CheckAuth>
+          }
+        >
           <Route path="register" element={<AuthRegister />} />
-          <Route path="login" element={<AuthLogin/>} />    
+          <Route path="login" element={<AuthLogin />} />
         </Route>
-        <Route path="/admin" element={
-          <CheckAuth isAuthenticated={isAuthenticated} user={user}>
-              <AdminLayout/>
-          </CheckAuth>
-        }>
-          <Route path="products" element={<AdminProducts/>}/>
-          <Route path="dashboard" element={<AdminDashboard/>}/>
-          <Route path="orders" element={<AdminOrders/>}/>
-          <Route path="features" element={<AdminFeatures/>}/>
+
+        <Route
+          path="/admin"
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+              <AdminLayout />
+            </CheckAuth>
+          }
+        >
+          <Route path="products" element={<AdminProducts />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="orders" element={<AdminOrders />} />
+          <Route path="features" element={<AdminFeatures />} />
         </Route>
-        <Route path="/shop" element={
-          <CheckAuth isAuthenticated={isAuthenticated} user={user}>
-            <ShoppingLayout/>
-          </CheckAuth>
-        }>
-          <Route path="home" element={<ShoppingHome/>}/>
-          <Route path="listing" element={<ShoppingListing/>}/>
-          <Route path="checkout" element={<ShoppingCheckout/>}/>
-          <Route path="account" element={<ShoppingAccount/>}/>
+
+        <Route
+          path="/shop"
+          element={
+            <CheckAuth isAuthenticated={isAuthenticated} user={user}>
+              <ShoppingLayout />
+            </CheckAuth>
+          }
+        >
+          <Route path="home" element={<ShoppingHome />} />
+          <Route path="listing" element={<ShoppingListing />} />
+          <Route path="checkout" element={<ShoppingCheckout />} />
+          <Route path="account" element={<ShoppingAccount />} />
         </Route>
-        <Route path="*" element={<NotFound/>}/>
-        <Route path="/unauth-page" element={<UnauthPage/>}/>
+
+        <Route path="*" element={<NotFound />} />
+        <Route path="/unauth-page" element={<UnauthPage />} />
       </Routes>
-      
     </div>
-  )
+  );
 }
 
 export default App;
+
