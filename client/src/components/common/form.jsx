@@ -1,7 +1,8 @@
-import { Label } from "@radix-ui/react-label";
-import { SelectTrigger } from "@radix-ui/react-select";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { Label } from "../ui/label";
+import { Textarea } from "../ui/textarea";
 function CommonForm({formControl,formData, setFormData, onSubmit, buttonText}){
 
     function renderInputByComponentType(getControlItem){
@@ -19,18 +20,17 @@ function CommonForm({formControl,formData, setFormData, onSubmit, buttonText}){
                 />
                 break;
             case "select":
-                element = (
-                    <Select onValueChange={(value) => setFormData({...formData, [getControlItem.name]:value,})}  value={value}>
-                        <SelectTrigger className="w-full">
-                            <SelectValue placeholder={getControlItem.placeholder} />
+                element = <Select className="bg-white" onValueChange={(value) => setFormData({...formData, [getControlItem.name]:value,})}  value={value}>
+                        <SelectTrigger className="w-full bg-white border border-gray-300 rounded-md p-2 flex justify-between items-center">
+                            <SelectValue placeholder={getControlItem.label} />
                         </SelectTrigger>
-                        <SelectContent>
+                        <SelectContent className="bg-white z-50 shadow-lg border border-gray-200">
                             {
                                 getControlItem?.options.map(option=> <SelectItem key={option.id} value={option.id}>{option.label}</SelectItem>)
                             }
                         </SelectContent>
                     </Select>
-                );
+                
                 break;
             case "textarea":
                 element = (
