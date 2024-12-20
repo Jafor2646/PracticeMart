@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const authRouter = require('./routes/auth/auth-routes');
-
+const adminProductsRouter = require('./routes/admin/products-routes');
 mongoose.connect(
     "mongodb://localhost:27017/express-mongo"
 ).then(() => console.log("Connected to MongoDB")
@@ -27,4 +27,6 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use('/api/auth', authRouter);
+app.use('/api/admin/products', adminProductsRouter);
+
 app.listen(port, () => console.log(`Server is running on port ${port}`));
