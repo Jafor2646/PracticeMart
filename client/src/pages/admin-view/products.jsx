@@ -3,8 +3,11 @@ import CommonForm from "@/components/common/form";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { addProductFromElements } from "@/config";
-import { Fragment } from "react";
+import { useToast } from "@/hooks/use-toast";
+import { addNewProduct, fetchAllProducts } from "@/store/admin/products-slice";
+import { Fragment, useEffect } from "react";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 const intitialFormData = {
     image: null,
@@ -23,10 +26,31 @@ function AdminProducts(){
     const [imageFile, setImageFile] = useState(null);
     const [uploadedImageUrl, setUploadedImageUrl] = useState('');
     const [imageLoadingState, setImageLoadingState] = useState(false);
-
-    function onSubmit(){
+    const { productList } = useSelector((state) => state.adminProducts);
+    const dispatch = useDispatch();
+    const {toast} = useToast();
+    function onSubmit(event){
+        event.preventDefault();
+        dispatch(addNewProduct({
+            ...formData, 
+            image: uploadedImageUrl
+        })).then((data) => {
+            console.log(data);
+            if(data.payload.success){
+                dispatch(fetchAllProducts());
+                setImageFile(null);
+                setOpenCreateProductsDialog(false);
+                setFormData(intitialFormData);
+                toast({
+                    title: 'Product Added Successfully',
+                });
+            }
+        });
     }
 
+    useEffect(() => {
+        dispatch(fetchAllProducts());
+    }, [dispatch]);
     return (
         <Fragment>
             <div className="mb-5 w-full flex justify-end">
@@ -47,6 +71,7 @@ function AdminProducts(){
                         uploadedImageUrl={uploadedImageUrl} 
                         setUploadedImageUrl={setUploadedImageUrl}
                         setImageLoadingState={setImageLoadingState}
+                        imageLoadingState={imageLoadingState}
                     />
                     <div className="py-6">
                         <CommonForm 

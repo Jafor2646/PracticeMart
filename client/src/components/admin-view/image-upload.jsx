@@ -4,8 +4,9 @@ import { Label } from "../ui/label";
 import { useEffect, useRef } from "react";
 import { Button } from "../ui/button";
 import axios from "axios";
+import { Skeleton } from "../ui/skeleton";
 
-function ProductImageUpload({ imageFile, setImageFile, uploadedImageUrl, setUploadedImageUrl, setImageLoadingState }) {
+function ProductImageUpload({ imageFile, setImageFile, uploadedImageUrl, setUploadedImageUrl, setImageLoadingState, imageLoadingState}) {
     const inputRef = useRef(null);
 
     function handleImageFileChange(e) {
@@ -63,15 +64,17 @@ function ProductImageUpload({ imageFile, setImageFile, uploadedImageUrl, setUplo
                     ref={inputRef}
                     onChange={handleImageFileChange}
                 />
-                {!imageFile ? 
+                {!imageFile ? (
                     <Label
                         htmlFor="image-upload"
                         className="cursor-pointer flex flex-col items-center justify-center h-32 border-2 border-dashed border-gray-300 rounded-lg"
                     >
                         <UploadCloudIcon className="w-10 h-10 text-gray-500 mb-2" />
                         <span className="text-center text-sm text-gray-600">Drag & drop or click to upload Image</span>
-                    </Label>
-                 : 
+                    </Label>)
+                 : (
+                    imageLoadingState ? 
+                     <Skeleton className="h-10 bg-gray-100" />:
                     <div className="flex items-center justify-between">
                         <div className="flex items-center"> 
                             <FileIcon className="w-8 h-8 text-gray-700 mr-2"/>
@@ -82,6 +85,7 @@ function ProductImageUpload({ imageFile, setImageFile, uploadedImageUrl, setUplo
                             <span className="sr-only">Remove File</span>
                         </Button>
                     </div>
+                )
                 }
             </div>
         </div>
