@@ -25,7 +25,7 @@ export const fetchAllProducts = createAsyncThunk('/products/fetchAllProducts', a
 
 })
 
-export const editProduct = createAsyncThunk('/products/editProduct', async (id, formData) => {
+export const editProduct = createAsyncThunk('/products/editProduct', async ({id, formData}) => {
     const result = await axios.put(`http://localhost:5000/api/admin/products/edit/${id}`, formData, {
         headers: {
             'Content-Type': 'application/json'
