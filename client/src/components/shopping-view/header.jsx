@@ -72,15 +72,16 @@ function ShoppingHeader() {
               <span className="sr-only">Toggle header menu</span>
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="w-full max-w-xs">
-            <div className="text-gray-200"><MenuItems /></div>
+          <SheetContent side="left" className="w-full max-w-xs bg-white">
+            <div><MenuItems /></div>
+            <HeaderRightContent />
           </SheetContent>
         </Sheet>
         <div className="hidden lg:block">
           <MenuItems />
         </div>
         
-        <div>
+        <div className="hidden lg:block">
             <HeaderRightContent />
         </div> 
         
