@@ -6,12 +6,31 @@ import { fetchAllFilteredProducts } from "@/store/shop/products-slice";
 import { ArrowUpDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useSearchParams } from "react-router-dom";
+
+
+function createSearchParamsHelper(filterParams) {
+  const queryParams = [];
+
+  for (const [key, value] of Object.entries(filterParams)) {
+    if (Array.isArray(value) && value.length > 0) {
+      const paramValue = value.join(",");
+
+      queryParams.push(`${key}=${encodeURIComponent(paramValue)}`);
+    }
+  }
+
+  console.log(queryParams, "queryParams");
+
+  return queryParams.join("&");
+}
 
 function ShoppingListing() {
   const dispatch = useDispatch();
   const { productList } = useSelector(state=>state.shopProducts);
   const [filters ,setFilters] = useState({});
   const [sort, setSort] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
   function handleSort(value){
     //console.log(value);
 
@@ -40,18 +59,28 @@ function ShoppingListing() {
   }
 
   useEffect(()=>{
-    setSort("priceLowToHigh");
+    setSort("price-lowtohigh");
     setFilters(JSON.parse(sessionStorage.getItem('filters')) || {});
   }, []);
 
+  useEffect(() => {
+    if(filters && Object.keys(filters).length > 0){
+      const createQueryString = createSearchParamsHelper(filters);
+      setSearchParams(new URLSearchParams(createQueryString));
+    }
+  }, [filters]);
+
   //fetch list of products
   useEffect(()=>{
-    dispatch(fetchAllFilteredProducts());
-  }, [dispatch]);
+    if(filters !== null && sort !== null){
+      dispatch(fetchAllFilteredProducts({filterParams : filters, sortParams : sort}));
+    }
+    
+  }, [dispatch, sort, filters]);
 
-  //console.log(filters, "filters");
+  console.log(filters, searchParams, "filters");
     return (
-      <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-6 p-4 md:p-6">
+      <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-6 p-4 md:p-6">
         <ProductFilter filters={filters} handleFilter={handleFilter}/>
         <div className="bg-background w-full rounded-lg shadow-sm">
           <div className="p-4 border-b flex items-center justify-between">
