@@ -34,7 +34,7 @@ function ShoppingProductTile({ product, handleGetProductDetails }) {
                     </div>
                 </CardContent>
                 <CardFooter>
-                    <button className="w-full">Add to Cart</button>
+                    <button className="w-full bg-black text-white rounded-lg">Add to Cart</button>
                 </CardFooter>
             </div>
         </div>
