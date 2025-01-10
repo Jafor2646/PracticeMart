@@ -7,51 +7,58 @@ import { shoppingViewHeaderMenuItems } from "@/config";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "@/store/auth-slice";
+import UserCartWrapper from "./cart-wrapper";
+import { useState } from "react";
 
-function MenuItems(){
+function MenuItems() {
   //console.log(shoppingViewHeaderMenuItems);
   return (
     <nav className="flex flex-col mb-3 lg:mb-0 lg:items-center lg:flex-row gap-6">
       {
         shoppingViewHeaderMenuItems.map((item) => (<Link key={item.id} to={item.path} className="text-sm font-medium">{item.label}</Link>))
-    }
+      }
     </nav>
   );
 }
 
-function HeaderRightContent(){
+function HeaderRightContent() {
   const { user } = useSelector((state) => state.auth);
+  const [openCartSheet, setOpenCartSheet] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  function handleLogout(){
+  function handleLogout() {
     dispatch(logoutUser());
   }
 
   return <div className="flex lg:items-center lg:flex-row flex-col gap-4">
-    <Button variant="outline" size="icon">
-    <ShoppingCart className="w-6 h-6"/>
-    <span className="sr-only">User Cart</span>
-    </Button>
-  <DropdownMenu>
-    <DropdownMenuTrigger asChild>
-      <Avatar>
-        <AvatarFallback className="bg-black text-white font-extrabold cursor-pointer">{user.userName[0].toUpperCase()}</AvatarFallback>
-      </Avatar>
-    </DropdownMenuTrigger>
-    <DropdownMenuContent>
-      <DropdownMenuLabel>Logged in as {user?.userName}</DropdownMenuLabel>
-      <DropdownMenuSeparator />
-      <DropdownMenuItem className="cursor-pointer" onClick={() => navigate("/shop/account")}>  
-        <UserCog className="mr-2 h-4 w-4" />
-        Account
-      </DropdownMenuItem>
-      <DropdownMenuSeparator />
-      <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
-        <LogOut className="mr-2 h-4 w-4" />
-        Logout
-      </DropdownMenuItem>
-    </DropdownMenuContent>
-  </DropdownMenu>
+    <Sheet open={openCartSheet} onOpenChange={()=>setOpenCartSheet(false)}>
+      <Button onClick={()=>setOpenCartSheet(true)} variant="outline" size="icon">
+        <ShoppingCart className="w-6 h-6" />
+        <span className="sr-only">User Cart</span>
+      </Button>
+      <UserCartWrapper />
+
+    </Sheet>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Avatar>
+          <AvatarFallback className="bg-black text-white font-extrabold cursor-pointer">{user.userName[0].toUpperCase()}</AvatarFallback>
+        </Avatar>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuLabel>Logged in as {user?.userName}</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem className="cursor-pointer" onClick={() => navigate("/shop/account")}>
+          <UserCog className="mr-2 h-4 w-4" />
+          Account
+        </DropdownMenuItem>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem className="cursor-pointer" onClick={handleLogout}>
+          <LogOut className="mr-2 h-4 w-4" />
+          Logout
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   </div>
 }
 
@@ -68,7 +75,7 @@ function ShoppingHeader() {
         <Sheet>
           <SheetTrigger asChild>
             <Button variant="outline" size="icon" className="lg:hidden">
-            <Menu className="h-6 w-6"/>
+              <Menu className="h-6 w-6" />
               <span className="sr-only">Toggle header menu</span>
             </Button>
           </SheetTrigger>
@@ -80,14 +87,14 @@ function ShoppingHeader() {
         <div className="hidden lg:block">
           <MenuItems />
         </div>
-        
+
         <div className="hidden lg:block">
-            <HeaderRightContent />
-        </div> 
-        
+          <HeaderRightContent />
+        </div>
+
       </div>
     </header>
   );
-}   
+}
 
 export default ShoppingHeader;  
