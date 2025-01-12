@@ -1,10 +1,11 @@
 import { brandOptionsMap, categoryOptionsMap } from "@/config";
 import { Badge } from "../ui/badge";
 import { Card, CardContent, CardFooter } from "../ui/card";
+import { Button } from "../ui/button";
 
 
 
-function ShoppingProductTile({ product, handleGetProductDetails }) {
+function ShoppingProductTile({ product, handleGetProductDetails, handleAddtoCart, }) {
   return (
 
       <Card className="rounded-xl w-full max-w-sm mx-auto">
@@ -33,9 +34,7 @@ function ShoppingProductTile({ product, handleGetProductDetails }) {
                         }         
                     </div>
                 </CardContent>
-                <CardFooter>
-                    <button className="w-full bg-black text-white rounded-lg">Add to Cart</button>
-                </CardFooter>
+                
             </div>
         </div>
       </Card>

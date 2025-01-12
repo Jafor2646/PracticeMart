@@ -64,6 +64,10 @@ function ShoppingListing() {
     sessionStorage.setItem('filters', JSON.stringify(copyFilters));
   }
 
+  function handleAddtoCart(getCurrentProductId){
+    console.log(getCurrentProductId);
+  }
+
   useEffect(()=>{
     setSort("price-lowtohigh");
     setFilters(JSON.parse(sessionStorage.getItem('filters')) || {});
@@ -89,7 +93,6 @@ function ShoppingListing() {
     if(productDetails !== null) setOpenDetailsDialog(true)
   }, [productDetails]);
 
-  console.log(productDetails, "product details");
     return (
       <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] gap-6 p-4 md:p-6">
         <ProductFilter filters={filters} handleFilter={handleFilter}/>
@@ -118,7 +121,14 @@ function ShoppingListing() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
              {
               productList && productList.length > 0 ?
-              productList.map(productItem => <ShoppingProductTile handleGetProductDetails={handleGetProductDetails} product={productItem}/>) : null
+              productList.map(productItem => 
+              <ShoppingProductTile 
+              handleGetProductDetails={handleGetProductDetails} 
+              product={productItem}
+              handleAddtoCart={handleAddtoCart}
+              />) 
+              : 
+              null
              }         
           
           </div>
