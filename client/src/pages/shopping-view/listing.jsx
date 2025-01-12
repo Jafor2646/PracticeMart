@@ -8,7 +8,7 @@ import { ArrowUpDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-
+import {addToCart} from "@/store/shop/cart-slice";
 
 function createSearchParamsHelper(filterParams) {
   const queryParams = [];
@@ -21,12 +21,12 @@ function createSearchParamsHelper(filterParams) {
     }
   }
 
-  console.log(queryParams, "queryParams");
 
   return queryParams.join("&");
 }
 
 function ShoppingListing() {
+  const {user} = useSelector(state=>state.auth);
   const dispatch = useDispatch();
   const { productList, productDetails } = useSelector(state=>state.shopProducts);
   const [filters ,setFilters] = useState({});
@@ -34,7 +34,6 @@ function ShoppingListing() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
   function handleSort(value){
-    //console.log(value);
 
     setSort(value);
   }
@@ -65,7 +64,7 @@ function ShoppingListing() {
   }
 
   function handleAddtoCart(getCurrentProductId){
-    console.log(getCurrentProductId);
+    dispatch(addToCart({userId: user?.id, productId: getCurrentProductId, quantity : 1})).then(data=> console.log(data))
   }
 
   useEffect(()=>{

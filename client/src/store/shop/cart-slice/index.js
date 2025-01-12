@@ -7,7 +7,7 @@ const initialState = {
 }
 
 
-const addToCart = createAsyncThunk('cart/addToCart', async (userId, productId, quantity) => {
+export const addToCart = createAsyncThunk('cart/addToCart', async (userId, productId, quantity) => {
     const response = axios.post('http://localhost:5000/api/shop/cart/add', {
         userId,
         productId,
@@ -19,7 +19,7 @@ const addToCart = createAsyncThunk('cart/addToCart', async (userId, productId, q
 }
 );
 
-const fetchCartItems = createAsyncThunk('cart/fetchCartItems', async (userId) => {
+export const fetchCartItems = createAsyncThunk('cart/fetchCartItems', async (userId) => {
     const response = axios.get(`http://localhost:5000/api/shop/cart/get/${userId}`);
 
 
@@ -29,7 +29,7 @@ const fetchCartItems = createAsyncThunk('cart/fetchCartItems', async (userId) =>
 );
 
 
-const deleteCartItem = createAsyncThunk('cart/deleteCartItem', async (userId, productId) => {
+export const deleteCartItem = createAsyncThunk('cart/deleteCartItem', async (userId, productId) => {
     const response = axios.delete(`http://localhost:5000/api/shop/cart/${userId}/${productId}`
     );
     return response.data;
@@ -38,7 +38,7 @@ const deleteCartItem = createAsyncThunk('cart/deleteCartItem', async (userId, pr
 );
 
 
-const updateCartQuantity = createAsyncThunk('cart/updateCartQuantity', async (userId, productId, quantity) => {
+export const updateCartQuantity = createAsyncThunk('cart/updateCartQuantity', async (userId, productId, quantity) => {
     const response = axios.put('http://localhost:5000/api/shop/cart/update-cart', {
         userId,
         productId,
