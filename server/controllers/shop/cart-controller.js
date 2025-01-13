@@ -10,7 +10,6 @@ const addToCar = async (req, res) => {
                 message: 'Invalid data provided!'
             })
         }
-
         const product = await Product.findById(productId);
         if(!product){
             return res.status(404).json({
