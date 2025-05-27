@@ -29,7 +29,7 @@ export const fetchAllFilteredProducts = createAsyncThunk(
   );
 
 
-  export const fetchProductDetails = createAsyncThunk(
+export const fetchProductDetails = createAsyncThunk(
     "/products/fetchProductDetails",
     async (id) => {
       const result = await axios.get(

@@ -10,7 +10,6 @@ const addToCar = async (req, res) => {
                 message: 'Invalid data provided!'
             })
         }
-
         const product = await Product.findById(productId);
         if(!product){
             return res.status(404).json({
@@ -57,7 +56,7 @@ const fetchCartItems = async (req, res) => {
         }
 
         const cart = await Cart.findOne({userId}).populate({
-            path : 'item.productId',
+            path : 'items.productId',
             select : "image title price salePrice"
         })
         if(!cart){
@@ -80,7 +79,7 @@ const fetchCartItems = async (req, res) => {
             title : item.productId.title,
             price : item.productId.price,
             salePrice : item.productId.salePrice,
-            quantity : item.productId.quantity
+            quantity : item.quantity
 
         }))
 
