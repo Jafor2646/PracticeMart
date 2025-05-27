@@ -7,20 +7,28 @@ const initialState = {
 }
 
 
-export const addToCart = createAsyncThunk('cart/addToCart', async ({userId, productId, quantity}) => {
-    const response = axios.post('http://localhost:5000/api/shop/cart/add', {
+export const addToCart = createAsyncThunk(
+  'cart/addToCart',
+  async ({ userId, productId, quantity }, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await axios.post("http://localhost:5000/api/shop/cart/add", {
         userId,
         productId,
         quantity,
-    },
-    );
-    return response.data;
+      });
 
-}
+      // ✅ Trigger a fresh fetch after adding
+      dispatch(fetchCartItems(userId));
+
+      return response.data; // Keep this if your reducer uses it
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
 );
 
 export const fetchCartItems = createAsyncThunk('cart/fetchCartItems', async (userId) => {
-    const response = axios.get(`http://localhost:5000/api/shop/cart/get/${userId}`);
+    const response = await axios.get(`http://localhost:5000/api/shop/cart/get/${userId}`);
 
 
     return response.data;
@@ -29,26 +37,42 @@ export const fetchCartItems = createAsyncThunk('cart/fetchCartItems', async (use
 );
 
 
-export const deleteCartItem = createAsyncThunk('cart/deleteCartItem', async (userId, productId) => {
-    const response = axios.delete(`http://localhost:5000/api/shop/cart/${userId}/${productId}`
-    );
-    return response.data;
+export const deleteCartItem = createAsyncThunk(
+  'cart/deleteCartItem',
+  async ({ userId, productId }, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await axios.delete(`http://localhost:5000/api/shop/cart/${userId}/${productId}`);
 
-}
+      dispatch(fetchCartItems(userId)); // 🔁 Re-fetch cart after deletion
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
 );
 
 
-export const updateCartQuantity = createAsyncThunk('cart/updateCartQuantity', async (userId, productId, quantity) => {
-    const response = axios.put('http://localhost:5000/api/shop/cart/update-cart', {
+
+export const updateCartQuantity = createAsyncThunk(
+  'cart/updateCartQuantity',
+  async ({ userId, productId, quantity }, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await axios.put("http://localhost:5000/api/shop/cart/update-cart", {
         userId,
         productId,
         quantity,
-    }
-    );
-    return response.data;
+      });
 
-}
+      dispatch(fetchCartItems(userId)); // 🔁 Re-fetch cart after update
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
 );
+
 
 
 
