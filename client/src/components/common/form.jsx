@@ -67,8 +67,8 @@ function CommonForm({formControl,formData, setFormData, onSubmit, buttonText, is
                         {renderInputByComponentType(controlItem)}
                     </div>
                 ))}
-            </div>
-            <Button disabled={isBtnDisabled} type="submit" className="mt-2 w-full">{buttonText || "Submit"}</Button>
+            </div> 
+            <Button disabled={isBtnDisabled} type="submit" className="mt-2 w-full bg-black text-white rounded-xl hover:text-black">{buttonText || "Submit"}</Button>
         </form>
     );
 }
