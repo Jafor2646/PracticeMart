@@ -3,17 +3,15 @@ import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Dialog } from "../ui/dialog";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
-import ShoppingOrderDetailsView from "./order-details";
+import AdminOrderDetailsView from "./order-details";
 
 
-function ShoppingOrders(){
-
-    const [openDetailsDialog, setOpenDetailsDialog] = useState(false);
-
+function AdminOrdersView() {
+    const [openDetailsDialog,setOpenDetailsDialog] = useState(false);
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Order History</CardTitle>
+                <CardTitle>All Orders</CardTitle>
             </CardHeader>
             <CardContent>
                 <Table>
@@ -37,7 +35,7 @@ function ShoppingOrders(){
                             <TableCell>
                                 <Dialog open={openDetailsDialog} onOpenChange={setOpenDetailsDialog}>
                                     <Button onClick={()=>setOpenDetailsDialog(true)} className="bg-black text-white hover:text-black">View Details</Button>
-                                    <ShoppingOrderDetailsView />
+                                    <AdminOrderDetailsView />
                                 </Dialog>
                             </TableCell>
                         </TableRow>
@@ -48,4 +46,4 @@ function ShoppingOrders(){
     );
 }
 
-export default ShoppingOrders;
+export default AdminOrdersView;
