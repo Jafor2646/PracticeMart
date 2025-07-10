@@ -39,7 +39,7 @@ function ProductImageUpload({ imageFile, setImageFile, uploadedImageUrl, setUplo
         setImageLoadingState(true);
        const data = new FormData();
        data.append('my_file', imageFile);
-       const response = await axios.post('http://localhost:5000/api/admin/products/upload-image', data);
+       const response = await axios.post(`${VITE_REACT_APP_BACKEND_BASEURL}/api/admin/products/upload-image`, data);
        console.log(response);
        if(response.data?.success){
         setUploadedImageUrl(response.data.result.url);

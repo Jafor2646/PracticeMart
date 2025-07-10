@@ -11,7 +11,7 @@ export const addToCart = createAsyncThunk(
   'cart/addToCart',
   async ({ userId, productId, quantity }, { dispatch, rejectWithValue }) => {
     try {
-      const response = await axios.post("http://localhost:5000/api/shop/cart/add", {
+      const response = await axios.post(`${VITE_REACT_APP_BACKEND_BASEURL}/api/shop/cart/add`, {
         userId,
         productId,
         quantity,
@@ -28,7 +28,7 @@ export const addToCart = createAsyncThunk(
 );
 
 export const fetchCartItems = createAsyncThunk('cart/fetchCartItems', async (userId) => {
-    const response = await axios.get(`http://localhost:5000/api/shop/cart/get/${userId}`);
+    const response = await axios.get(`${VITE_REACT_APP_BACKEND_BASEURL}0/api/shop/cart/get/${userId}`);
 
 
     return response.data;
@@ -41,7 +41,7 @@ export const deleteCartItem = createAsyncThunk(
   'cart/deleteCartItem',
   async ({ userId, productId }, { dispatch, rejectWithValue }) => {
     try {
-      const response = await axios.delete(`http://localhost:5000/api/shop/cart/${userId}/${productId}`);
+      const response = await axios.delete(`${VITE_REACT_APP_BACKEND_BASEURL}/api/shop/cart/${userId}/${productId}`);
 
       dispatch(fetchCartItems(userId)); // 🔁 Re-fetch cart after deletion
 
@@ -58,7 +58,7 @@ export const updateCartQuantity = createAsyncThunk(
   'cart/updateCartQuantity',
   async ({ userId, productId, quantity }, { dispatch, rejectWithValue }) => {
     try {
-      const response = await axios.put("http://localhost:5000/api/shop/cart/update-cart", {
+      const response = await axios.put(`${VITE_REACT_APP_BACKEND_BASEURL}/api/shop/cart/update-cart`, {
         userId,
         productId,
         quantity,
