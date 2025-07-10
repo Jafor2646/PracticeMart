@@ -1,8 +1,11 @@
 
 const express = require('express');
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+
+dotenv.config();
 const authRouter = require('./routes/auth/auth-routes');
 const adminProductsRouter = require('./routes/admin/products-routes');
 const adminOrderRouter = require('./routes/admin/order-routes');
@@ -16,7 +19,7 @@ const shopReviewRouter = require('./routes/shop/review-routes');
 const shopSearchRouter = require('./routes/shop/search-routes');
 
 mongoose.connect(
-    "mongodb://localhost:27017/express-mongo"
+    process.env.MONGO_URI
 ).then(() => console.log("Connected to MongoDB")
 ).catch((error) => console.log("Could not connect to MongoDB"));   
 
